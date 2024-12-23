@@ -1,9 +1,14 @@
-import Image from "next/image";
-import FillWords from "./components/FillWords";
-import Game from "./components/Game";
+import Link from "next/link";
 
 export default function Home() {
   return (
-   <Game/>
+    <>
+         <h1>Words Filling Game</h1>
+   <Link href={{ pathname: '/Game', query: { name: 'easy' } }}>Easy</Link>
+      <Link href={{ pathname: '/Game', query: { name: 'med' } }}>Medium</Link>
+      <Link href={{ pathname: '/Game', query: { name: 'hard' } }}>Hard</Link>
+    </>
+
+
   );
 }

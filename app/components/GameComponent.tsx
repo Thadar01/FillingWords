@@ -2,23 +2,37 @@
 
 import { useEffect, useRef } from 'react';
 import Phaser from 'phaser';
-import FillWordScene from './FillWordsScene';
+import EasyFillWordScene from './EasyFillWordScene';
+import MedFillWordScene from './MedFillWordSene';
+import HardFillWordScene from './HardFillWordScene';
 
 
+interface ShootingGameProps {
+  name: string | null;
+}
 
-const GameComponent = () => {
+const GameComponent: React.FC<ShootingGameProps> = ({ name }) => {
   const gameRef = useRef<Phaser.Game | null>(null);
 
-
-
   useEffect(() => {
-    if (gameRef.current) return;
+    if (gameRef.current) {
+      return; // Prevent reinitialization
+    }
 
-    const gameConfig: Phaser.Types.Core.GameConfig = {
+    const scenes = [];
+    if (name === 'easy') {
+      scenes.push(EasyFillWordScene);
+    }else if(name==='med'){
+      scenes.push(MedFillWordScene)
+    }else if(name=='hard'){
+      scenes.push(HardFillWordScene)
+    }
+
+    const config: Phaser.Types.Core.GameConfig = {
       type: Phaser.AUTO,
-      width: 1400,
+      width: 1410,
       height: 700,
-      scene: [FillWordScene],
+      scene: scenes,
       physics: {
         default: 'arcade',
         arcade: {
@@ -30,7 +44,7 @@ const GameComponent = () => {
       backgroundColor: '#FFFFFF',
     };
 
-    gameRef.current = new Phaser.Game(gameConfig);
+    gameRef.current = new Phaser.Game(config);
 
     return () => {
       if (gameRef.current) {
@@ -38,13 +52,13 @@ const GameComponent = () => {
         gameRef.current = null;
       }
     };
-  }, []);
+  }, [name]);
 
-
-
-  return <div id="phaser-container"></div>;
+  return (
+    <div>
+      <div id="phaser-container"></div>
+    </div>
+  );
 };
 
 export default GameComponent;
-
-
